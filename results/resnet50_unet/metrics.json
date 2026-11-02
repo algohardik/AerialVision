@@ -1,0 +1,15 @@
+{
+  "test_patches": 135,
+  "threshold": 0.5,
+  "pixel_accuracy": 0.9493025037977428,
+  "precision": 0.6350897720864928,
+  "recall": 0.8528014547107613,
+  "iou": 0.5723487690722058,
+  "dice": 0.7280175751464237,
+  "mean_per_patch_dice": 0.776914056916398,
+  "tp": 600304,
+  "fp": 344923,
+  "fn": 103616,
+  "tn": 7798517,
+  "note": "Pixel metrics are aggregated over all test pixels; mean_per_patch_dice gives each patch equal weight."
+}

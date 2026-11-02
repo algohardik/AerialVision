@@ -1,0 +1,42 @@
+{
+    "best_threshold": 0.6,
+    "best_validation_iou": 0.5910821845723038,
+    "results": [
+        {
+            "threshold": 0.3,
+            "validation_iou": 0.5524140537051178
+        },
+        {
+            "threshold": 0.35,
+            "validation_iou": 0.5664308631556929
+        },
+        {
+            "threshold": 0.4,
+            "validation_iou": 0.5746129396299944
+        },
+        {
+            "threshold": 0.45,
+            "validation_iou": 0.5811250288039721
+        },
+        {
+            "threshold": 0.5,
+            "validation_iou": 0.5860011699928104
+        },
+        {
+            "threshold": 0.55,
+            "validation_iou": 0.5895437580334374
+        },
+        {
+            "threshold": 0.6,
+            "validation_iou": 0.5910821845723038
+        },
+        {
+            "threshold": 0.65,
+            "validation_iou": 0.5904306646100388
+        },
+        {
+            "threshold": 0.7,
+            "validation_iou": 0.5873613592732745
+        }
+    ]
+}
