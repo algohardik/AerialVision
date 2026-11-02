@@ -1,24 +1,21 @@
+# Python environments and caches
 .venv/
 venv/
 __pycache__/
 *.py[cod]
 .ipynb_checkpoints/
+
+# Local credentials and OS files
 .env
+.streamlit/secrets.toml
 .DS_Store
+*.log
 
-# Large source data and generated data
-data/raw/*
-data/processed/*
-!data/raw/.gitkeep
-!data/processed/.gitkeep
-
-# Model checkpoints and experiment outputs
-models/*
-!models/.gitkeep
-reports/*
-!reports/.gitkeep
+# Large/generated local data, models, and runtime artifacts
+data/
+models/
+reports/
 logs/
+predictions/
 
-# Backup files
-app_backup.py
-src/tune_threshold_backup.py
+# Keep the evaluation evidence in results/ tracked.

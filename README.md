@@ -272,7 +272,19 @@ The evaluation code reports global pixel metrics across the whole test split and
 ## 8. Predict on a new image
 
 ```
-python src/predict.py --image path/to/aerial_image.tif --model-path models/resnet50_unet/best_model.keras --output-dir predictions
+# Frozen ResNet50 U-Net (defaults to threshold 0.50)
+python src/predict.py \
+  --image path/to/aerial_image.tif \
+  --model-path models/resnet50_unet/best_model.keras \
+  --output-dir predictions
+
+# Fine-tuned ResNet50 U-Net (defaults to validation-selected threshold 0.60)
+python src/predict.py \
+  --image path/to/aerial_image.tif \
+  --model-path models/resnet50_unet_finetuned/best_model.keras \
+  --output-dir predictions
+
+# Pass --threshold to override the default for any checkpoint.
 
 ```
 
@@ -311,6 +323,16 @@ All three architectures were trained and evaluated using 256 × 256 patches from
 The best result in these experiments was achieved by the fine-tuned ResNet50 U-Net at threshold **0.60**, with test IoU **0.5891** and Dice **0.7414**. Compared with the same checkpoint evaluated at threshold 0.50, threshold 0.60 improved IoU by 0.0091 and Dice by 0.0073. Precision increased while recall decreased, reflecting a more conservative building prediction threshold.
 
 These results are pixel-level metrics aggregated over the held-out test pixels. They are not the official SpaceNet instance-level building detection score. The evaluation uses one AOI, so it does not demonstrate generalization to other cities.
+
+### Regenerate comparison artifacts
+
+After all four evaluation metric files exist, regenerate the committed comparison table and charts with:
+
+```bash
+python src/compare_models.py
+```
+
+The script reads the four `metrics.json` files under `results/` and regenerates `results/model_comparison.csv`, `results/model_comparison.png`, and `results/final_model_comparison.png`.
 
 ### Further experiments
 
@@ -357,22 +379,38 @@ These results are pixel-level metrics aggregated over the held-out test pixels. 
 
 ## Project structure
 
-```
-AerialVision-TensorFlow/
+The following is the tracked GitHub repository layout. `results/` is committed because it contains compact evaluation metrics, comparison tables, and selected prediction visualizations. Large source data, trained checkpoints, and runtime artifacts are generated locally and intentionally excluded by `.gitignore`.
+
+```text
+AerialVision/
+├── .gitignore
+├── README.md
 ├── app.py
 ├── download_data.py
 ├── requirements.txt
 ├── requirements-colab.txt
-├── README.md
-├── data/
-│   ├── raw/                 # downloaded/extracted SpaceNet files (not committed)
-│   └── processed/           # generated PNG patches and manifest (not committed)
-├── models/                  # saved .keras models (not committed)
-├── reports/                 # dataset inspection plots and reports (not committed)
-├── results/                 # evaluation metrics and prediction visualizations (not committed)
-├── logs/                    # TensorBoard logs (not committed)
+├── results/
+│   ├── model_comparison.csv
+│   ├── model_comparison.png
+│   ├── final_model_comparison.png
+│   ├── unet/
+│   │   ├── metrics.json
+│   │   └── test_example_*.png
+│   ├── resnet50_unet/
+│   │   ├── metrics.json
+│   │   └── test_example_*.png
+│   ├── resnet50_unet_finetuned/
+│   │   ├── best_threshold.json
+│   │   ├── metrics.json
+│   │   └── test_example_*.png
+│   └── resnet50_unet_finetuned_threshold_060/
+│       ├── metrics.json
+│       └── test_example_*.png
 └── src/
+    ├── __init__.py
     ├── check_setup.py
+    ├── compare_models.py
+    ├── create_demo_data.py
     ├── data_utils.py
     ├── evaluate.py
     ├── inference_utils.py
@@ -386,5 +424,12 @@ AerialVision-TensorFlow/
     ├── train.py
     ├── tune_threshold.py
     └── visualize_dataset.py
-
 ```
+
+The following directories are created locally as needed and are **not committed**:
+
+- `data/raw/` and `data/processed/` — downloaded SpaceNet archives and generated image/mask patches.
+- `models/` — trained `.keras` checkpoints.
+- `reports/` and `logs/` — local inspection plots and TensorBoard logs.
+- `predictions/` — outputs produced by command-line inference.
+
